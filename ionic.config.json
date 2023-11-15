@@ -1,0 +1,7 @@
+{
+  "name": "demo-barcode",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

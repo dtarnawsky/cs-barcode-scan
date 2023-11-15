@@ -1,0 +1,15 @@
+<ion-content [fullscreen]="true">
+  <ion-button [disabled]="busy" expand="full" (click)="onScan()">
+    <ion-icon slot="start" name="scan-outline"></ion-icon>
+    <ion-label>Scan</ion-label>
+  </ion-button>
+  <ion-label *ngIf="installing">Installing....</ion-label>
+
+  <ion-alert
+  [isOpen]="isAlertOpen"
+  header="Header"
+  message="Could not scan barcode."
+  (didDismiss)="setOpen(false)"
+></ion-alert>
+
+</ion-content>
