@@ -64,7 +64,6 @@ export class HomePage {
     } else {
       return true;
     }
-    return false;
   }
 
 }
