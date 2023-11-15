@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package cs.ionic.barcode;
 
 import com.getcapacitor.BridgeActivity;
 

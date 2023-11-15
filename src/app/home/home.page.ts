@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { BarcodeScanner, BarcodeFormat, CameraPermissionState, GoogleBarcodeScannerModuleInstallProgressEvent, GoogleBarcodeScannerModuleInstallState } from '@capacitor-mlkit/barcode-scanning';
-import { PluginListenerHandle } from '@capacitor/core';
+import { Capacitor, PluginListenerHandle } from '@capacitor/core';
 
 @Component({
   selector: 'app-home',
@@ -38,18 +38,20 @@ export class HomePage {
   }
 
   private async checkSettings(): Promise<boolean> {
-    const result = await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
-    if (!result.available) {
-      if (!this.installHandle) {
-        this.installHandle = BarcodeScanner.addListener('googleBarcodeScannerModuleInstallProgress', (event: GoogleBarcodeScannerModuleInstallProgressEvent) => {          
-          if (event.state == GoogleBarcodeScannerModuleInstallState.COMPLETED) {
-            this.installing = false;
-          }
-        });
+    if (Capacitor.getPlatform() == 'android') {
+      const result = await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
+      if (!result.available) {
+        if (!this.installHandle) {
+          this.installHandle = BarcodeScanner.addListener('googleBarcodeScannerModuleInstallProgress', (event: GoogleBarcodeScannerModuleInstallProgressEvent) => {
+            if (event.state == GoogleBarcodeScannerModuleInstallState.COMPLETED) {
+              this.installing = false;
+            }
+          });
+        }
+        this.installing = true;
+        await BarcodeScanner.installGoogleBarcodeScannerModule();
+        return false;
       }
-      this.installing = true;
-      await BarcodeScanner.installGoogleBarcodeScannerModule(); 
-      return false;     
     }
 
     const permitted = await BarcodeScanner.checkPermissions();
